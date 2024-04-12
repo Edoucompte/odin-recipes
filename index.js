@@ -1,3 +1,5 @@
+// game Station
+
 const choiceTab= ['Rock', 'Paper', 'Scissors'];
 var playerScore, computerScore;
 
@@ -16,10 +18,10 @@ function playRound (playerSelection, computerChoice){
             case 'Rock':
                 if (computerChoice === 'Scissors') {
                     playerScore ++;
-                    return "You win!," + playerSelection + " beats " + computerChoice;
+                    return "You win!, " + playerSelection + " beats " + computerChoice;
                 } else{
                     computerScore++;
-                    return "You lose!," + computerChoice  + " beats " + playerSelection;
+                    return "You lose!, " + computerChoice  + " beats " + playerSelection;
                     
                 }
                 break;
@@ -27,20 +29,20 @@ function playRound (playerSelection, computerChoice){
             case 'Paper':
                 if (computerChoice === 'Rock') {
                     playerScore++;
-                    return "You win!," + playerSelection + " beats " + computerChoice;
+                    return "You win!, " + playerSelection + " beats " + computerChoice;
                 } else{
                     computerScore++;
-                    return "You lose!," + computerChoice  + " beats " + playerSelection;
+                    return "You lose!, " + computerChoice  + " beats " + playerSelection;
                 }
                 break;
         
             default:
                 if (computerChoice === 'Paper') {
                     playerScore++;
-                    return "You win!," + playerSelection + " beats " + computerChoice;
+                    return "You win!, " + playerSelection + " beats " + computerChoice;
                 } else{
                     computerScore  ++;
-                    return "You lose!," + computerChoice  + " beats " + playerSelection;
+                    return "You lose!, " + computerChoice  + " beats " + playerSelection;
                 }
                 break;
         }
@@ -48,30 +50,73 @@ function playRound (playerSelection, computerChoice){
 }
 
 // variables
-let playerSelection, computerChoice, i = 0;
+let playerSelection, computerChoice;
 
-// program starts here
+// Game program starts here
 
 function playGame() {
-    computerChoice = getComputerChoice();
+    
+    choiceDiv.onclick= (e)=>{
+        
+        //Computer makes random choice
+        computerChoice = getComputerChoice();
 
-    let str = prompt("Your choice ( Rock, Paper or Scissors) :").toLowerCase(); //get player choice by prompt
-    str = str[0].toUpperCase() + str.slice(1); //capitalize this choice like choiceTab elements
+        //Ask for player choice
+        playerSelection = e.target.alt;
 
+        //Play a round and show the result
+        comment.textContent = playRound(playerSelection, computerChoice);
+        scorePlayer.textContent= playerScore;
+        scoreComp.textContent= computerScore;
 
-    if (choiceTab.includes(str)){ 
-        playerSelection = str;
-        console.log(playRound(playerSelection, computerChoice));
-    }
-    else{
-        alert("Error! Your choice is undifined");
+        if (Math.max(playerScore, computerScore)==5) {
+            playerScore = 0;
+            computerScore= 0;
+            choiceDiv.classList.add('hide');
+            play_button.textContent= 'Restart?'
+            play_button.classList.remove('hide');
+        }
     }
 }
 
-playerScore = 0;
-computerScore = 0;
-while (i < 5) {
-    playGame();
-    console.log(playerScore, computerScore);
-    i++;
+// Game station end
+
+
+//player station start 
+const p1= document.getElementById('p1');
+const p2= document.getElementById('p2');
+
+// scores
+const comment = document.getElementById('comment');
+const scoreComp = document.getElementById('scoreComp');
+const scorePlayer = document.getElementById('scorePlayer');
+const scoreDiv= document.getElementById('scorediv');
+
+
+const play_button = document.getElementById('play');
+const choice_span = document.getElementById('choice');
+const choiceDiv = document.getElementById('choice');
+
+
+// When player click on play button 
+play_button.onclick = ()=>{
+
+    // Scores init
+    playerScore = 0;
+    computerScore = 0;
+
+    scoreComp.textContent = '0';
+    scorePlayer.textContent = '0';
+    comment.textContent= '';
+
+    //Tranformation for one game
+    play_button.classList.add('hide');
+    p1.classList.add('hide');
+    p2.classList.remove('hide');
+    scoreDiv.style.display= 'flex';
+    choice_span.classList.remove('hide');
+    playGame(); 
+        
 }
+
+
